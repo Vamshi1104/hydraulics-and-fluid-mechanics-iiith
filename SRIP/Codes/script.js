@@ -2,8 +2,11 @@
 	var c = canvas.getContext('2d');
 	canvas.width = window.innerWidth; //Setting the canvas to full width of the window
 	canvas.height = window.innerHeight; //Setting the canvas to full height of the window
-	
+	var selection;
+	var x=900;
 	//Drawing outline boxes
+	function draw_main()
+	{
 		c.beginPath();
 		c.lineWidth="10";
 		c.strokeStyle="#006599";
@@ -26,13 +29,6 @@
 		c.fillStyle="#006599";
 		c.fillText("Reynolds",200,100);
 		c.stroke();
-
-		function heading(id)  //function for replacing the heading as per user selection
-			{
-				var x=id.name;
-				var h=document.getElementById("heading");
-				h.innerHTML=x;
-			}
 		draw("3","#767676",390,240,390,450);
 		c.beginPath();
 		c.lineWidth="3";
@@ -120,3 +116,173 @@
 	c.fill();
 	c.closePath();
 	c.stroke();
+	c.strokeStyle="#0099FF";
+	c.fillStyle="#0099FF";
+	m=0;
+}
+draw_main();
+	function heading(id)  //function for replacing the heading as per user selection
+			{
+				var x=id.name;
+				var h=document.getElementById("heading");
+				h.innerHTML=x;
+				selection=x;
+			}
+	function main()
+	{
+		
+		if(selection=="Transitional")
+		{   
+			Transitional_disappear();
+		}	
+		else if(selection=="Turbulent")
+		{   
+			c.clearRect(0,0,canvas.width,canvas.height);
+			draw_main();
+			Turbulent_disappear();
+		}
+		else
+		{
+			Laminar_disappear();
+		}
+	}
+	//Laminar
+	
+	function Laminar_disappear()
+	{
+        
+		c.beginPath();
+		c.strokeStyle="white";
+		c.moveTo(900,404);
+		c.lineTo(920,404);
+		c.stroke();
+		c.closePath();
+		c.beginPath();
+		c.strokeStyle="white";
+		c.moveTo(900,359);
+		c.lineTo(920,359);
+		c.stroke();
+		c.closePath();
+		c.beginPath();
+		c.strokeStyle="#767676";
+		c.moveTo(900,404);
+		c.lineTo(920,404);
+		c.stroke();
+		c.closePath();
+		c.beginPath();
+		c.strokeStyle="#767676";
+		c.moveTo(900,359);
+		c.lineTo(920,359);
+		c.stroke();
+		c.closePath();
+		c.fillRect(x,360,20,44);
+		x+=20;
+		c.beginPath();
+		c.strokeStyle="white";
+		c.lineWidth="2";
+		c.moveTo(898,373);
+		c.lineTo(912,373);
+		c.stroke();
+		c.closePath();
+		c.beginPath();
+		c.strokeStyle="white";
+		c.lineWidth="2";
+		c.moveTo(898,388);
+		c.lineTo(912,388);
+		c.stroke();
+		c.closePath();
+		Laminar_animate();
+		Laminar_line();
+	}
+	var x_counter=920;
+	var flag=10;
+	var x_left_water=392;
+	var y_left_water=291;
+	var x_right_water=536;
+	var x_line=599;
+	var y_line=387;
+	var end=0;
+	var id=null;
+	var line_id=null;
+	function Laminar_line()
+	{
+		line_id=requestAnimationFrame(Laminar_line);
+		c.beginPath();
+		c.strokeStyle="red";
+		c.lineWidth="2";
+		c.moveTo(x_line,y_line);
+		c.lineTo(x_line+2,y_line);
+		c.stroke();
+		c.closePath();
+		if(x_line<982)
+			x_line+=1;
+		else
+		{   
+			cancelAnimationFrame(line_id);
+			x=900;
+		}
+
+	}
+	function Laminar_animate()
+	{ 	
+		id=requestAnimationFrame(Laminar_animate);
+		c.clearRect(x_left_water,y_left_water,72,2);
+		c.clearRect(x_right_water,y_left_water,82.2,2);
+		if(y_left_water<321)
+			y_left_water+=0.17;
+	
+		c.fillRect(x,360,11,44);
+		c.stroke();
+		if(flag===100)
+		{       
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,373);
+				c.lineTo(x_counter+10,373);
+				c.stroke();
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,388);
+				c.lineTo(x_counter+10,388);
+				c.stroke();
+				c.closePath();
+				c.closePath();
+				x_counter+=20;
+				flag=10;
+		}
+		    
+		if(x<974)
+		{
+			x=x+0.3;
+			flag++;
+		}
+		else
+		{
+			end=1;
+		}
+		
+		        c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,373);
+				c.lineTo(x_counter+10,373);
+				c.stroke();
+				c.closePath();
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,388);
+				c.lineTo(x_counter+10,388);
+				c.stroke();
+				c.closePath();
+		if(end)
+		{
+			cancelAnimationFrame(id);
+			x=900;
+		}
+		
+				
+	}
+  		
