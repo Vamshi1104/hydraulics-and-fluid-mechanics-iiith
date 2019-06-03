@@ -1,10 +1,23 @@
 	var canvas = document.querySelector('canvas');
 	var c = canvas.getContext('2d');
-	canvas.width = window.innerWidth; //Setting the canvas to full width of the window
-	canvas.height = window.innerHeight; //Setting the canvas to full height of the window
 	var selection;
 	var x=900;
-	//Drawing outline boxes
+	var x_counter=920;
+	var flag=10;
+	var x_left_water=392;
+	var y_left_water=291;
+	var x_right_water=536;
+	var x_line=599;
+	var y_line=387;
+	var end=0;
+	var id=null;
+	var line_id=null;
+	canvas.width = window.innerWidth; //Setting the canvas to full width of the window
+	canvas.height = window.innerHeight; //Setting the canvas to full height of the window
+	
+	
+	//-----------Drawing outline boxes-------------------
+
 	function draw_main()
 	{
 		c.beginPath();
@@ -120,37 +133,41 @@
 	c.fillStyle="#0099FF";
 	m=0;
 }
-draw_main();
-	function heading(id)  //function for replacing the heading as per user selection
+	draw_main();
+	function heading(pid)  //function for replacing the heading as per user selection
 			{
-				var x=id.name;
+				var x=pid.name;
 				var h=document.getElementById("heading");
 				h.innerHTML=x;
 				selection=x;
+				
 			}
 	function main()
 	{
 		
 		if(selection=="Transitional")
 		{   
+			var btn=document.getElementById("b");
+			btn.disabled=true;
 			Transitional_disappear();
 		}	
 		else if(selection=="Turbulent")
 		{   
-			c.clearRect(0,0,canvas.width,canvas.height);
-			draw_main();
+			var btn=document.getElementById("b");
+			btn.disabled=true;
 			Turbulent_disappear();
 		}
 		else
 		{
+			var btn=document.getElementById("b");
+			btn.disabled=true;
 			Laminar_disappear();
 		}
 	}
-	//Laminar
 	
-	function Laminar_disappear()
+	
+	function disappear()
 	{
-        
 		c.beginPath();
 		c.strokeStyle="white";
 		c.moveTo(900,404);
@@ -191,19 +208,15 @@ draw_main();
 		c.lineTo(912,388);
 		c.stroke();
 		c.closePath();
+	}
+	//----Code for Laminar Animation-----
+	function Laminar_disappear()
+	{
+        
+		disappear();
 		Laminar_animate();
 		Laminar_line();
 	}
-	var x_counter=920;
-	var flag=10;
-	var x_left_water=392;
-	var y_left_water=291;
-	var x_right_water=536;
-	var x_line=599;
-	var y_line=387;
-	var end=0;
-	var id=null;
-	var line_id=null;
 	function Laminar_line()
 	{
 		line_id=requestAnimationFrame(Laminar_line);
@@ -215,12 +228,27 @@ draw_main();
 		c.stroke();
 		c.closePath();
 		if(x_line<982)
-			x_line+=1;
+			x_line+=2.1;
 		else
 		{   
-			cancelAnimationFrame(line_id);
+            cancelAnimationFrame(line_id);
 			x=900;
+			var btn=document.getElementById("b");
+			btn.disabled=false;
+			c.clearRect(380,200,650,400);
+			draw_main();
+			x_counter=920;
+			flag=10;
+			x_left_water=392;
+			y_left_water=291;
+			x_right_water=536;
+			x_line=599;
+			y_line=387;
+			end=0;
+			id=null;
+			line_id=null;
 		}
+
 
 	}
 	function Laminar_animate()
@@ -283,6 +311,285 @@ draw_main();
 			x=900;
 		}
 		
-				
 	}
+	//----Code for Transitional Animation-----
+	function Transitional_disappear()
+	{
+		
+		disappear();
+		Transitional_animate();
+		Transitional_line();
+	}
+	function Transitional_animate()
+	{
+		
+		id=requestAnimationFrame(Transitional_animate);
+		c.clearRect(x_left_water,y_left_water,227,2);
+		if(y_left_water<335)
+			y_left_water+=0.33;
+		c.beginPath();
+		c.strokeStyle="black";
+		c.lineWidth="1";
+		c.moveTo(465,240);
+		c.lineTo(465,324);
+		c.lineTo(490,349);
+		c.lineTo(490,394);
+		c.lineTo(580,394);
+		c.lineTo(599,387);
+		c.lineTo(580,380);
+		c.lineTo(510,380);
+		c.lineTo(510,349);
+		c.lineTo(535,324);
+		c.lineTo(535,270);
+		c.lineTo(465,270);
+		c.fillStyle="#333333";
+		c.fill();
+		c.lineTo(535,270);
+		c.lineTo(535,240);
+		c.stroke();
+		c.fillStyle="#0099FF";
+		c.fillRect(x,360,11,44);
+		c.stroke();
+		if(flag===75)
+		{       
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,373);
+				c.lineTo(x_counter+10,373);
+				c.stroke();
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,388);
+				c.lineTo(x_counter+10,388);
+				c.stroke();
+				c.closePath();
+				c.closePath();
+				x_counter+=20;
+				flag=10;
+		}
+		    
+		if(x<974)
+		{
+			x=x+0.4;
+			flag++;
+		}
+		else
+		{
+			end=1;
+			
+		}
+		
+		        c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,373);
+				c.lineTo(x_counter+10,373);
+				c.stroke();
+				c.closePath();
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,388);
+				c.lineTo(x_counter+10,388);
+				c.stroke();
+				c.closePath();
+				
+		if(end)
+		{
+			cancelAnimationFrame(id);
+			x=900;
+		}
+		
+	}
+	var s=1;
+	function Transitional_line()
+	{
+		line_id=requestAnimationFrame(Transitional_line);
+		if(x_line<790)
+		{
+			c.beginPath();
+		c.strokeStyle="red";
+		c.lineWidth="2";
+		c.moveTo(x_line,y_line);
+		c.lineTo(x_line+2,y_line);
+		c.stroke();
+		c.closePath();
+		}
+		else if(x_line<982)
+		{
+			var y_random=Math.random()*s*4;
+			s=s*-1;
+			c.beginPath();
+			c.strokeStyle="red";
+			c.lineWidth="2";
+			if(y_line+y_random>365 && y_line+y_random<400)
+			{
+			c.moveTo(x_line-1,y_line);
+			c.lineTo(x_line-1,y_line+y_random);
+			c.stroke();
+			c.closePath();
+			y_line=y_line+y_random;
+			}
+			
+		}
+		if(x_line<982)
+			x_line+=2.1;
+		else
+		{   
+			cancelAnimationFrame(line_id);
+			x=900;
+			var btn=document.getElementById("b");
+			btn.disabled=false;
+			c.clearRect(380,200,650,400);
+			draw_main();
+			x_counter=920;
+			flag=10;
+			x_left_water=392;
+			y_left_water=291;
+			x_right_water=536;
+			x_line=599;
+			y_line=387;
+			end=0;
+			id=null;
+			line_id=null;
+		}
+
+	}
+	//----Code for Turbulent Animation-----
+	function Turbulent_disappear()
+	{
+		disappear();
+		Turbulent_animate();
+		Turbulent_line();
+	}
+	function Turbulent_animate()
+	{
+		
+		id=requestAnimationFrame(Turbulent_animate);
+		c.clearRect(x_left_water,y_left_water,227,2);
+		if(y_left_water<345)
+			y_left_water+=0.5;
+		c.beginPath();
+		c.strokeStyle="black";
+		c.lineWidth="1";
+		c.moveTo(465,240);
+		c.lineTo(465,324);
+		c.lineTo(490,349);
+		c.lineTo(490,394);
+		c.lineTo(580,394);
+		c.lineTo(599,387);
+		c.lineTo(580,380);
+		c.lineTo(510,380);
+		c.lineTo(510,349);
+		c.lineTo(535,324);
+		c.lineTo(535,270);
+		c.lineTo(465,270);
+		c.fillStyle="#333333";
+		c.fill();
+		c.lineTo(535,270);
+		c.lineTo(535,240);
+		c.stroke();
+		c.fillStyle="#0099FF";
+		c.fillRect(x,360,11,44);
+		c.stroke();
+		if(flag===60)
+		{       
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,373);
+				c.lineTo(x_counter+10,373);
+				c.stroke();
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,388);
+				c.lineTo(x_counter+10,388);
+				c.stroke();
+				c.closePath();
+				c.closePath();
+				x_counter+=20;
+				flag=10;
+		}
+		    
+		if(x<974)
+		{
+			x=x+0.5;
+			flag++;
+		}
+		else
+		{
+			end=1;
+			
+		}
+		
+		        c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,373);
+				c.lineTo(x_counter+10,373);
+				c.stroke();
+				c.closePath();
+				c.beginPath();
+				c.strokeStyle="white";
+				c.lineWidth="2";
+				c.moveTo(x_counter,388);
+				c.lineTo(x_counter+10,388);
+				c.stroke();
+				c.closePath();
+				
+		if(end)
+		{
+			cancelAnimationFrame(id);
+			x=900;
+		}
+		
+	}
+	function Turbulent_line()
+	{
+		
+		line_id=requestAnimationFrame(Turbulent_line);
+		if(x_line<982)
+		{
+			var y_random=Math.random()*s*10;
+			s=s*-1;
+			c.beginPath();
+			c.strokeStyle="red";
+			c.lineWidth="2";
+			if(y_line+y_random>365 && y_line+y_random<400)
+			{
+			c.moveTo(x_line,y_line);
+			c.lineTo(x_line,y_line+y_random);
+			c.stroke();
+			c.closePath();
+			y_line=y_line+y_random;
+			}
+			
+		}
+		if(x_line<982)
+			x_line+=2.2;
+		else
+		{   
+			cancelAnimationFrame(line_id);
+			x=900;
+			var btn=document.getElementById("b");
+			btn.disabled=false;
+			c.clearRect(380,200,650,400);
+			draw_main();
+			x_counter=920;
+			flag=10;
+			x_left_water=392;
+			y_left_water=291;
+			x_right_water=536;
+			x_line=599;
+			y_line=387;
+			end=0;
+			id=null;
+			line_id=null;
+		}
+	}
+		
+  
   		
