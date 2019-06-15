@@ -612,6 +612,91 @@
 			line_id=null;
 		}
 	}
+	
+		//First slider
+		var s1 = document.getElementById("myRange1");
+		var o1 = document.getElementById("demo1");
+		o1.innerHTML = s1.value+" C"; // Display the default slider value
+
+		// Update the current slider value (each time you drag the slider handle)
+		s1.oninput = function() {
+		o1.innerHTML = this.value+" C";
+		} 
 		
-  
-  		
+		//Second Slider
+		var s2 = document.getElementById("myRange2");
+	    var o2 = document.getElementById("demo2");
+		o2.innerHTML = s2.value+" Cm";
+		s2.oninput = function() {
+		o2.innerHTML = this.value+" Cm";
+		} 
+		
+		//Third Slider
+		var s3 = document.getElementById("myRange3");
+	    var o3 = document.getElementById("demo3");
+		o3.innerHTML = s3.value+" Cm"; 
+		s3.oninput = function() {
+		o3.innerHTML = this.value+" Cm";
+		} 
+		
+		//Fourth Slider
+		var s4 = document.getElementById("myRange4");
+	    var o4 = document.getElementById("demo4");
+		o4.innerHTML = s4.value+" Sec"; 
+		s4.oninput = function() {
+		o4.innerHTML = this.value+" Sec";
+		} 
+		
+		//Fifth Slider
+		var s5 = document.getElementById("myRange5");
+	    var o5 = document.getElementById("demo5");
+		o5.innerHTML = s5.value+" Cm"; 
+		s5.oninput = function() {
+		o5.innerHTML = this.value+" Cm";
+		} 
+		
+		var len,time,dia;
+		//Extracting the inputs from user
+		function get_data()
+		{
+		len=o3.innerHTML;
+		len = len.match(/\d/g);
+		len= len.join("");
+		
+		time=o4.innerHTML;
+		time = time.match(/\d/g);
+		time= time.join("");
+		
+		dia=o2.innerHTML;
+		dia = dia.match(/\d/g);
+		dia= dia.join("");
+		}
+		
+		//Function to calculate the reynolds number
+		function rno()
+		{   get_data();
+			var num=((len/time)*dia)/0.55;
+			var reynum=document.getElementById("Number");
+			reynum.innerHTML=num;
+			regime(num);
+		}
+		
+		//Function to determine flow of regime
+		function regime(reynum)
+		
+		{   
+
+			var reg=document.getElementById("flow");
+			if(reynum<2000)
+			{   
+				reg.innerHTML="Laminar Flow";
+			}
+			else if(reynum>2000 && reynum<4000)
+			{
+				reg.innerHTML="Transitional Flow";
+			}
+			else
+			{
+				reg.innerHTML="Turbulent Flow";
+			}
+		}
