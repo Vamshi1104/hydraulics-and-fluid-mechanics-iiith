@@ -613,64 +613,45 @@
 		}
 	}
 	
-		//First slider
-		var s1 = document.getElementById("myRange1");
-		var o1 = document.getElementById("demo1");
-		o1.innerHTML = s1.value+" C"; // Display the default slider value
-
-		// Update the current slider value (each time you drag the slider handle)
-		s1.oninput = function() {
-		o1.innerHTML = this.value+" C";
-		} 
-		
-		//Second Slider
-		var s2 = document.getElementById("myRange2");
-	    var o2 = document.getElementById("demo2");
-		o2.innerHTML = s2.value+" Cm";
-		s2.oninput = function() {
-		o2.innerHTML = this.value+" Cm";
-		} 
-		
-		//Third Slider
-		var s3 = document.getElementById("myRange3");
-	    var o3 = document.getElementById("demo3");
-		o3.innerHTML = s3.value+" Cm"; 
-		s3.oninput = function() {
-		o3.innerHTML = this.value+" Cm";
-		} 
-		
-		//Fourth Slider
-		var s4 = document.getElementById("myRange4");
-	    var o4 = document.getElementById("demo4");
-		o4.innerHTML = s4.value+" Sec"; 
-		s4.oninput = function() {
-		o4.innerHTML = this.value+" Sec";
-		} 
-		
-		//Fifth Slider
-		var s5 = document.getElementById("myRange5");
-	    var o5 = document.getElementById("demo5");
-		o5.innerHTML = s5.value+" Cm"; 
-		s5.oninput = function() {
-		o5.innerHTML = this.value+" Cm";
-		} 
-		
-		var len,time,dia;
+		var pattern=/\D/g;
+		var len,time,dia,first,last;
+		var char_flag,flag_control;
 		//Extracting the inputs from user
 		function get_data()
 		{
-		len=o3.innerHTML;
-		len = len.match(/\d/g);
-		len= len.join("");
+		char_flag=false;
+		flag_control=false;
+		len=document.getElementById("myRange3").value;
+		var len1=len.match(pattern);
 		
-		time=o4.innerHTML;
-		time = time.match(/\d/g);
-		time= time.join("");
+		time=document.getElementById("myRange4").value;
+		var time1=time.match(pattern);
 		
-		dia=o2.innerHTML;
-		dia = dia.match(/\d/g);
-		dia= dia.join("");
+		dia=document.getElementById("myRange2").value;
+		var dia1=dia.match(pattern);
+			first=document.getElementById("myRange1").value;
+		var first1=first.match(pattern);
+			last=document.getElementById("myRange5").value;
+		var last1=last.match(pattern);
+		
+		
+		if(len1!=null||time1!=null||dia1!=null||first1!=null||last1!=null)
+		{   
+			char_flag=true;
+			flag_control=true;
+			alert("Please enter only digits,that too should be positive!");
 		}
+		if(len<=0||time<=0||dia<=0)
+		{
+			if(!flag_control)
+			{
+				char_flag=true;
+				alert("Plese enter only positive numbers!");
+			}
+		}
+		
+		}
+		
 		
 		//Function to calculate the reynolds number
 		function rno()
@@ -700,3 +681,12 @@
 				reg.innerHTML="Turbulent Flow";
 			}
 		}
+		function reset()
+		{
+			document.getElementById("myRange1").value=null;
+			document.getElementById("myRange2").value=null;
+			document.getElementById("myRange3").value=null;
+			document.getElementById("myRange4").value=null;
+			document.getElementById("myRange5").value=null;
+		}
+		
